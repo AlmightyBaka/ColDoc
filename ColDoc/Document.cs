@@ -48,7 +48,7 @@ namespace ColDoc
 				Size = 14d,
 				Bold = false
 			};
-
+		
 			formattingBold = formattingNormal;
 			formattingBold.Bold = true;
 		}
@@ -56,18 +56,18 @@ namespace ColDoc
 		public void Create()
 		{
 			paragraphHeader = document.InsertParagraph(header + this.docNumber, false, formattingNormal);
-			formatGOST(paragraphHeader, Alignment.center);
+			formatToGOST(paragraphHeader, Alignment.center);
 			paragraphName = document.InsertParagraph(theme, false, formattingBold);
-			formatGOST(paragraphName, Alignment.center);
+			formatToGOST(paragraphName, Alignment.center);
 			paragraphTask = document.InsertParagraph(task + taskNumber, false, formattingNormal);
-			formatGOST(paragraphTask, Alignment.both);
+			formatToGOST(paragraphTask, Alignment.both);
 			paragraphDivider = document.InsertParagraph("\n\n");
-			formatGOST(paragraphDivider, Alignment.both);
+			formatToGOST(paragraphDivider, Alignment.both);
 			paragraphCode = document.InsertParagraph(code, false, formattingNormal);
-			formatGOST(paragraphCode, Alignment.both);
+			formatToGOST(paragraphCode, Alignment.both);
 			document.InsertParagraph(paragraphDivider);
 			paragraphResult = document.InsertParagraph(result, false, formattingNormal);
-			formatGOST(paragraphResult, Alignment.both);
+			formatToGOST(paragraphResult, Alignment.both);
 
 			for (int tasks = 0; tasks < 2; tasks++)
 			{
@@ -90,22 +90,18 @@ namespace ColDoc
 			document.InsertParagraph(paragraphDivider);
 			taskNumber++;
 			paragraphTask = document.InsertParagraph(task + taskNumber + ".", false, formattingNormal);
-			formatGOST(paragraphTask, Alignment.both);
+			formatToGOST(paragraphTask, Alignment.both);
 			document.InsertParagraph(paragraphDivider);
 			document.InsertParagraph(paragraphCode);
 			document.InsertParagraph(paragraphDivider);
 			document.InsertParagraph(paragraphResult);
 		}
 
-		private void formatGOST(Paragraph paragraph, Alignment alignment)
+		private void formatToGOST(Paragraph paragraph, Alignment alignment)
 		{
 			paragraph.Alignment = alignment;
-			paragraph.IndentationBefore = 0;
-			paragraph.IndentationAfter = 0;
-			paragraph.IndentationFirstLine = 0;
-			paragraph.IndentationHanging = 0;
+			paragraph.SetLineSpacing(LineSpacingType.After, 0f);
 			paragraph.SetLineSpacing(LineSpacingType.Line, 1.5f);
-			paragraph.Spacing(0);
 		}
 	}
 }
