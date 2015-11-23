@@ -34,7 +34,7 @@ namespace ColDoc
 		private string theme;
 		private int taskNumber = 1;
 		private string[] codeDirFolders;
-		private string code;
+		private string[] code;
 	
 		#endregion
 
@@ -48,7 +48,7 @@ namespace ColDoc
 			this.docNumber = docNumber;
 			this.theme = theme;
 			this.projectsPath = projectsPath;
-
+		
 			formattingNormal = new Formatting
 			{
 				FontFamily = new System.Drawing.FontFamily("Times New Roman"),
@@ -58,6 +58,8 @@ namespace ColDoc
 
 			formattingBold = formattingNormal;
 			formattingBold.Bold = true;
+
+			codeDirFolders = GetCodeDirFolders(projectsPath);
 
 
 
@@ -104,7 +106,7 @@ namespace ColDoc
 
 			//doc.Save();
 			//Process.Start("WINWORD.EXE", filePath);
-		
+
 		}
 
 		public void Create()
@@ -121,14 +123,19 @@ namespace ColDoc
 			FormatToGost(paragraphDivider, Alignment.both);
 			paragraphCodeHeader = document.InsertParagraph(codeHeader, false, formattingNormal);
 			FormatToGost(paragraphCodeHeader, Alignment.both);
+			code = GetCode();
+			foreach (string line in code)
+			{
+				paragraphCode = document.InsertParagraph(line, false, formattingNormal);
+				FormatToGost(paragraphCode, Alignment.both);
+			}
 			document.InsertParagraph(paragraphDivider);
 			paragraphResultHeader = document.InsertParagraph(resultHeader, false, formattingNormal);
 			FormatToGost(paragraphResultHeader, Alignment.both);
 
-			codeDirFolders = GetCodeDirFolders(projectsPath);
 			for (int i = 0; i < codeDirFolders.Length - 1; i++)
 			{
-				WriteTask(i);
+				WriteTask();
 			}
 		
 			try
@@ -148,7 +155,7 @@ namespace ColDoc
 			return Directory.GetDirectories(path);
 		}
 	
-		private void WriteTask(int task)
+		private void WriteTask()
 		{
 			taskNumber++;
 			document.InsertParagraph(paragraphDivider);
@@ -157,18 +164,21 @@ namespace ColDoc
 			document.InsertParagraph(paragraphDivider);
 			document.InsertParagraph(paragraphCodeHeader);
 		
-			code = GetCode(task);
-			paragraphCode = document.InsertParagraph(code, false, formattingNormal);
-			FormatToGost(paragraphCode, Alignment.both);
+			code = GetCode();
+			foreach (string line in code)
+			{
+				paragraphCode = document.InsertParagraph(line, false, formattingNormal); 
+				FormatToGost(paragraphCode, Alignment.both);
+			}
 			
 			document.InsertParagraph(paragraphDivider);
 			document.InsertParagraph(paragraphResultHeader);
 		}
 
-		private string GetCode(int task)
+		private string[] GetCode()
 		{
-			string code = "";
-
+			string[] code = new []{"ERROR"};
+		
 			foreach (string codeDirFolder in codeDirFolders)
 			{
 				string[] dirSplitted = codeDirFolder.Split('\\');
@@ -178,7 +188,10 @@ namespace ColDoc
 				{
 					if (file.Contains(".cs") && !file.Contains(".csproj"))
 					{
-						code = System.IO.File.ReadAllText(file);
+						//code = System.IO.File.ReadAllText(file);
+						//code = code.Replace("\r\n", "\r\r");
+						code = File.ReadAllLines(file);
+						
 					}
 				}
 			}
