@@ -43,7 +43,8 @@
 			this.buttonFilePath = new System.Windows.Forms.Button();
 			this.label3 = new System.Windows.Forms.Label();
 			this.textBoxName = new System.Windows.Forms.TextBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.checkBoxMakeScreenshot = new System.Windows.Forms.CheckBox();
+			this.checkBoxOpenAfterCreate = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownDocumentNumber)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -93,6 +94,7 @@
 			this.textBoxProjectsPath.Name = "textBoxProjectsPath";
 			this.textBoxProjectsPath.Size = new System.Drawing.Size(277, 20);
 			this.textBoxProjectsPath.TabIndex = 6;
+			this.textBoxProjectsPath.Text = "E:\\College\\ПП\\5_string";
 			// 
 			// textBoxFilePath
 			// 
@@ -164,22 +166,35 @@
 			this.textBoxName.TabIndex = 14;
 			this.textBoxName.Text = "name";
 			// 
-			// checkBox1
+			// checkBoxMakeScreenshot
 			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(371, 342);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(76, 17);
-			this.checkBox1.TabIndex = 15;
-			this.checkBox1.Text = "Скриншот";
-			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBoxMakeScreenshot.AutoSize = true;
+			this.checkBoxMakeScreenshot.Location = new System.Drawing.Point(371, 342);
+			this.checkBoxMakeScreenshot.Name = "checkBoxMakeScreenshot";
+			this.checkBoxMakeScreenshot.Size = new System.Drawing.Size(76, 17);
+			this.checkBoxMakeScreenshot.TabIndex = 15;
+			this.checkBoxMakeScreenshot.Text = "Скриншот";
+			this.checkBoxMakeScreenshot.UseVisualStyleBackColor = true;
+			// 
+			// checkBoxOpenAfterCreate
+			// 
+			this.checkBoxOpenAfterCreate.AutoSize = true;
+			this.checkBoxOpenAfterCreate.Checked = true;
+			this.checkBoxOpenAfterCreate.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBoxOpenAfterCreate.Location = new System.Drawing.Point(371, 319);
+			this.checkBoxOpenAfterCreate.Name = "checkBoxOpenAfterCreate";
+			this.checkBoxOpenAfterCreate.Size = new System.Drawing.Size(70, 17);
+			this.checkBoxOpenAfterCreate.TabIndex = 16;
+			this.checkBoxOpenAfterCreate.Text = "Открыть";
+			this.checkBoxOpenAfterCreate.UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(459, 373);
-			this.Controls.Add(this.checkBox1);
+			this.Controls.Add(this.checkBoxOpenAfterCreate);
+			this.Controls.Add(this.checkBoxMakeScreenshot);
 			this.Controls.Add(this.textBoxName);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.buttonFilePath);
@@ -218,7 +233,8 @@
 		private System.Windows.Forms.Button buttonFilePath;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TextBox textBoxName;
-		private System.Windows.Forms.CheckBox checkBox1;
+		private System.Windows.Forms.CheckBox checkBoxMakeScreenshot;
+		private System.Windows.Forms.CheckBox checkBoxOpenAfterCreate;
 	}
 }
 

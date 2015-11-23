@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ColDoc
@@ -12,13 +13,17 @@ namespace ColDoc
 		{
 			InitializeComponent();
 		}
-
+	
 		private void buttonCreate_Click(object sender, EventArgs e)
 		{
 			// filePath = @"E:\Code\C#\CollegeDocs\Docs\Test.docx"
 			filePath = $"{textBoxFilePath.Text}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
-			Document document = new Document(filePath, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
+			Document document = new Document(textBoxProjectsPath.Text, filePath, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
 			document.Create();
+			if (checkBoxOpenAfterCreate.Checked)
+			{
+				Process.Start("WINWORD.EXE", filePath);
+			}
 		}
 
 		private void buttonSelectProjects_Click(object sender, EventArgs e)
