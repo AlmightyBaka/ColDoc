@@ -43,6 +43,7 @@
 			this.buttonFilePath = new System.Windows.Forms.Button();
 			this.label3 = new System.Windows.Forms.Label();
 			this.textBoxName = new System.Windows.Forms.TextBox();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownDocumentNumber)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -144,7 +145,7 @@
 			this.buttonFilePath.TabIndex = 12;
 			this.buttonFilePath.Text = "Выбрать...";
 			this.buttonFilePath.UseVisualStyleBackColor = true;
-			this.buttonFilePath.Click += new System.EventHandler(this.button1_Click);
+			this.buttonFilePath.Click += new System.EventHandler(this.buttonFilePath_Click);
 			// 
 			// label3
 			// 
@@ -163,11 +164,22 @@
 			this.textBoxName.TabIndex = 14;
 			this.textBoxName.Text = "name";
 			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Location = new System.Drawing.Point(371, 338);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(76, 17);
+			this.checkBox1.TabIndex = 15;
+			this.checkBox1.Text = "Скриншот";
+			this.checkBox1.UseVisualStyleBackColor = true;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(459, 373);
+			this.Controls.Add(this.checkBox1);
 			this.Controls.Add(this.textBoxName);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.buttonFilePath);
@@ -206,6 +218,7 @@
 		private System.Windows.Forms.Button buttonFilePath;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TextBox textBoxName;
+		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }
 

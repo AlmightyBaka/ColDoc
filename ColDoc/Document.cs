@@ -1,7 +1,6 @@
 ﻿// CollegeDocs: Document.cs
 
 using System.Diagnostics;
-using System.Xml.Linq;
 using Novacode;
 using System;
 
@@ -35,8 +34,9 @@ namespace ColDoc
 
 		public Document(string filePath, int docNumber, string theme)
 		{
-			document = DocX.Create(filePath);
-			// document = DocX.Load("frame.docx");
+			//filePath = @"E:\Code\C#\ColDoc\Docs\test.docx";
+			//document = DocX.Create(filePath);
+			document = DocX.Load(@"E:\Code\C#\ColDoc\Docs\frame.docx");
 
 			this.filePath = filePath;
 			this.docNumber = docNumber;
@@ -68,16 +68,15 @@ namespace ColDoc
 			document.InsertParagraph(paragraphDivider);
 			paragraphResult = document.InsertParagraph(result, false, formattingNormal);
 			formatGOST(paragraphResult, Alignment.both);
-			document.InsertParagraph(paragraphDivider);
 
 			for (int tasks = 0; tasks < 2; tasks++)
 			{
 				MakeTemplate();
 			}
-
+		
 			try
 			{
-				document.Save();
+				document.SaveAs(filePath);
 			}
 			catch (Exception)
 			{
@@ -85,11 +84,13 @@ namespace ColDoc
 			}
 			Process.Start("WINWORD.EXE", filePath);
 		}
-
+	
 		private void MakeTemplate()
 		{
 			document.InsertParagraph(paragraphDivider);
-			document.InsertParagraph(paragraphTask);
+			taskNumber++;
+			paragraphTask = document.InsertParagraph(task + taskNumber + ".", false, formattingNormal);
+			formatGOST(paragraphTask, Alignment.both);
 			document.InsertParagraph(paragraphDivider);
 			document.InsertParagraph(paragraphCode);
 			document.InsertParagraph(paragraphDivider);

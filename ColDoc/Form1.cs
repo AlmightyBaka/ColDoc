@@ -16,7 +16,7 @@ namespace ColDoc
 		private void buttonCreate_Click(object sender, EventArgs e)
 		{
 			// filePath = @"E:\Code\C#\CollegeDocs\Docs\Test.docx"
-			filePath = $"{folderBrowserDialog.SelectedPath}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
+			filePath = $"{textBoxFilePath.Text}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
 			Document document = new Document(filePath, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
 			document.Create();
 		}
@@ -29,7 +29,7 @@ namespace ColDoc
 			textBoxProjectsPath.Text = projectsPath;
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void buttonFilePath_Click(object sender, EventArgs e)
 		{
 			folderBrowserDialog.Reset();
 			folderBrowserDialog.ShowDialog();
