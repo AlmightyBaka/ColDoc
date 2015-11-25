@@ -17,7 +17,9 @@ namespace ColDoc
 		private void buttonCreate_Click(object sender, EventArgs e)
 		{
 			// filePath = @"E:\Code\C#\CollegeDocs\Docs\Test.docx"
-			filePath = $"{textBoxFilePath.Text}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
+			//filePath = $"{textBoxFilePath.Text}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
+			filePath = textBoxFilePath.Text;
+
 			Document document = new Document(textBoxProjectsPath.Text, filePath, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
 			document.Create();
 			if (checkBoxOpenAfterCreate.Checked)

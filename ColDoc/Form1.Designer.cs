@@ -94,7 +94,7 @@
 			this.textBoxProjectsPath.Name = "textBoxProjectsPath";
 			this.textBoxProjectsPath.Size = new System.Drawing.Size(277, 20);
 			this.textBoxProjectsPath.TabIndex = 6;
-			this.textBoxProjectsPath.Text = "E:\\College\\ПП\\5_string";
+			this.textBoxProjectsPath.Text = "E:\\College\\ТА\\8_Решение СЛУ";
 			// 
 			// textBoxFilePath
 			// 
@@ -102,7 +102,7 @@
 			this.textBoxFilePath.Name = "textBoxFilePath";
 			this.textBoxFilePath.Size = new System.Drawing.Size(277, 20);
 			this.textBoxFilePath.TabIndex = 7;
-			this.textBoxFilePath.Text = "E:\\Code\\C#\\ColDoc\\Docs";
+			this.textBoxFilePath.Text = "E:\\Code\\C#\\ColDoc\\Docs\\ЛР0_name_theme";
 			// 
 			// numericUpDownDocumentNumber
 			// 
