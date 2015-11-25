@@ -78,6 +78,7 @@
 			this.textBoxTheme.Size = new System.Drawing.Size(190, 20);
 			this.textBoxTheme.TabIndex = 3;
 			this.textBoxTheme.Text = "theme";
+			this.textBoxTheme.TextChanged += new System.EventHandler(this.textBoxTheme_TextChanged);
 			// 
 			// labelNumber
 			// 
@@ -102,7 +103,7 @@
 			this.textBoxFilePath.Name = "textBoxFilePath";
 			this.textBoxFilePath.Size = new System.Drawing.Size(277, 20);
 			this.textBoxFilePath.TabIndex = 7;
-			this.textBoxFilePath.Text = "E:\\Code\\C#\\ColDoc\\Docs\\ЛР0_name_theme";
+			this.textBoxFilePath.Text = "E:\\Code\\C#\\ColDoc\\Docs\\ЛР0_name_theme.docx";
 			// 
 			// numericUpDownDocumentNumber
 			// 
@@ -110,6 +111,7 @@
 			this.numericUpDownDocumentNumber.Name = "numericUpDownDocumentNumber";
 			this.numericUpDownDocumentNumber.Size = new System.Drawing.Size(48, 20);
 			this.numericUpDownDocumentNumber.TabIndex = 8;
+			this.numericUpDownDocumentNumber.ValueChanged += new System.EventHandler(this.numericUpDownDocumentNumber_ValueChanged);
 			// 
 			// label1
 			// 
@@ -165,6 +167,7 @@
 			this.textBoxName.Size = new System.Drawing.Size(100, 20);
 			this.textBoxName.TabIndex = 14;
 			this.textBoxName.Text = "name";
+			this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
 			// 
 			// checkBoxMakeScreenshot
 			// 

@@ -6,25 +6,38 @@ namespace ColDoc
 {
 	public partial class Form1 : Form
 	{
-		private string filePath;
-		private string projectsPath;
+		private string fileDir;
+		private string projectsDir;
 	
 		public Form1()
 		{
 			InitializeComponent();
+
+			string[] browserDialogDir = textBoxFilePath.Text.Split('\\');
+			for (int i = 0; i < browserDialogDir.Length - 2; i++)
+			{
+				folderBrowserDialog.SelectedPath += browserDialogDir[i] + '\\';
+			}
+			folderBrowserDialog.SelectedPath += browserDialogDir[browserDialogDir.Length - 2];
 		}
-	
+
+		private void UpdateFileDir()
+		{
+			fileDir =
+				$"{folderBrowserDialog.SelectedPath}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
+			textBoxFilePath.Text = fileDir;
+		}
+
 		private void buttonCreate_Click(object sender, EventArgs e)
 		{
-			// filePath = @"E:\Code\C#\CollegeDocs\Docs\Test.docx"
-			//filePath = $"{textBoxFilePath.Text}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
-			filePath = textBoxFilePath.Text;
+			// fileDir = @"E:\Code\C#\CollegeDocs\Docs\Test.docx"
+			fileDir = textBoxFilePath.Text;
 
-			Document document = new Document(textBoxProjectsPath.Text, filePath, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
+			Document document = new Document(textBoxProjectsPath.Text, fileDir, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
 			document.Create();
 			if (checkBoxOpenAfterCreate.Checked)
 			{
-				Process.Start("WINWORD.EXE", filePath);
+				Process.Start("WINWORD.EXE", fileDir);
 			}
 		}
 
@@ -32,16 +45,30 @@ namespace ColDoc
 		{
 			folderBrowserDialog.Reset();
 			folderBrowserDialog.ShowDialog();
-			projectsPath = folderBrowserDialog.SelectedPath;
-			textBoxProjectsPath.Text = projectsPath;
+			projectsDir = folderBrowserDialog.SelectedPath;
+			textBoxProjectsPath.Text = projectsDir;
 		}
 
 		private void buttonFilePath_Click(object sender, EventArgs e)
 		{
 			folderBrowserDialog.Reset();
 			folderBrowserDialog.ShowDialog();
-			filePath = $"{folderBrowserDialog.SelectedPath}\\ЛР{numericUpDownDocumentNumber.Value}_{textBoxName.Text}_{textBoxTheme.Text}.docx";
-			textBoxFilePath.Text = filePath;
+			UpdateFileDir();
+		}
+
+		private void textBoxTheme_TextChanged(object sender, EventArgs e)
+		{
+			UpdateFileDir();
+		}
+
+		private void numericUpDownDocumentNumber_ValueChanged(object sender, EventArgs e)
+		{
+			UpdateFileDir();
+		}
+
+		private void textBoxName_TextChanged(object sender, EventArgs e)
+		{
+			UpdateFileDir();
 		}
 	}
 }
