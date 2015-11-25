@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace ColDoc
 {
@@ -190,7 +191,24 @@ namespace ColDoc
 		{
 			Collection<string[]> code = new Collection<string[]>();
 			string[] dirSplitted = codeDirFolders[projectNumber].Split('\\');
-			string codeDir = codeDirFolders[projectNumber] + '\\' + dirSplitted[dirSplitted.Length - 1];
+			//string codeDir = codeDirFolders[projectNumber] + '\\' + dirSplitted[dirSplitted.Length - 1];
+			string projectDir = codeDirFolders[projectNumber];
+			string[] folder = Directory.GetFiles(projectDir);
+			int slnCount = -1;
+
+			for (int i = 0; i < folder.Length; i++)
+			{
+				if (folder[i].Contains(".sln"))
+				{
+					slnCount = i; // TODO: check condition
+					break;
+				}
+			}
+		
+			string codeDir = folder[slnCount].Remove(folder[slnCount].Length - 4);
+			string[] projectSplitted = codeDir.Split('\\');
+			codeDir = projectSplitted[projectSplitted.Length - 1];
+			codeDir = projectDir + @"\\" + codeDir;
 
 			foreach (string file in Directory.GetFiles(codeDir))
 			{
