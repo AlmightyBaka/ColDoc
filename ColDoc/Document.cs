@@ -129,7 +129,7 @@ namespace ColDoc
 			FormatToGost(paragraphResultHeader, Alignment.both);
 			document.InsertParagraph(paragraphEmptyLine);
 
-			for (int i = 0; i < codeDirFolders.Length - 1; i++)
+			for (int i = 1; i < codeDirFolders.Length; i++)
 			{
 				WriteTask(i);
 			}
