@@ -70,10 +70,5 @@ namespace ColDoc
 		{
 			UpdateFileDir();
 		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			Process.Start(@"E:\Code\C#\ColDoc\ColDoc\bin\Debug\ColDoc.exe");
-		}
 	}
 }

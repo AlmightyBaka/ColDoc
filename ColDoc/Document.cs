@@ -4,9 +4,15 @@ using Novacode;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace ColDoc
 {
@@ -17,6 +23,7 @@ namespace ColDoc
 		private DocX document;
 		private string projectsPath;
 		private string filePath;
+		private string binaryPath;
 
 		private Formatting formattingNormal;
 		private Formatting formattingBold;
@@ -27,6 +34,7 @@ namespace ColDoc
 		private Paragraph paragraphCodeHeader;
 		private Paragraph paragraphCode;
 		private Paragraph paragraphResultHeader;
+		private Paragraph paragraphCodePicture;
 		private Paragraph paragraphEmptyLine;
 
 		private string header = "Лабораторная работа №";
@@ -82,6 +90,7 @@ namespace ColDoc
 			FormatToGost(paragraphCodeHeader, Alignment.both);
 			InsertCode(0);
 			paragraphResultHeader = document.InsertParagraph(resultHeader, false, formattingNormal);
+			InsertScreenshot();
 			FormatToGost(paragraphResultHeader, Alignment.both);
 			
 			document.InsertParagraph(paragraphEmptyLine);
@@ -100,7 +109,7 @@ namespace ColDoc
 				document.Dispose();
 			}
 		}
-
+	
 		private void InsertTask(int task)
 		{
 			taskNumber++;
@@ -111,10 +120,9 @@ namespace ColDoc
 			document.InsertParagraph(paragraphEmptyLine);
 			document.InsertParagraph(paragraphEmptyLine);
 			document.InsertParagraph(paragraphCodeHeader);
-
 			InsertCode(task);
-
 			document.InsertParagraph(paragraphResultHeader);
+			InsertScreenshot();
 			document.InsertParagraph(paragraphEmptyLine);
 		}
 
@@ -135,6 +143,8 @@ namespace ColDoc
 					FormatToGost(paragraphCode, Alignment.both);
 				}
 
+				
+
 				document.InsertParagraph(paragraphEmptyLine);
 			}
 		}
@@ -143,7 +153,6 @@ namespace ColDoc
 		{
 			Collection<string[]> code = new Collection<string[]>();
 			string[] dirSplitted = codeDirFolders[projectNumber].Split('\\');
-			//string codeDir = codeDirFolders[projectNumber] + '\\' + dirSplitted[dirSplitted.Length - 1];
 			string projectDir = codeDirFolders[projectNumber];
 			string[] folder = Directory.GetFiles(projectDir);
 			int slnCount = -1;
@@ -162,6 +171,11 @@ namespace ColDoc
 			codeDir = projectSplitted[projectSplitted.Length - 1];
 			codeDir = projectDir + @"\\" + codeDir;
 
+			if (makeScreenshot)
+			{
+				binaryPath = codeDir + @"\\bin\\Debug\\" + projectSplitted[projectSplitted.Length - 1] + ".exe";
+			}
+
 			foreach (string file in Directory.GetFiles(codeDir))
 			{
 				if (file.Contains(".cs") && !file.Contains(".csproj"))
@@ -175,12 +189,55 @@ namespace ColDoc
 			return code;
 		}
 
+	
+		private void InsertScreenshot()
+		{
+			Process.Start(binaryPath);
+			Thread.Sleep(1000);
+			string[] binaryPathSplit = binaryPath.Split('\\');
+			Process[] process = Process.GetProcessesByName(binaryPathSplit[binaryPathSplit.Length - 1].Remove(binaryPathSplit[binaryPathSplit.Length - 1].Length - 4));
+			var rectangle = new User32.Rect();
+			User32.GetWindowRect(process[0].MainWindowHandle, ref rectangle);
+		
+			int width = rectangle.right - rectangle.left;
+			int height = rectangle.bottom - rectangle.top;
+		
+			screenshot = new Bitmap(width, height, PixelFormat.Format32bppRgb);
+			Graphics graphics = Graphics.FromImage(screenshot);
+			graphics.CopyFromScreen(rectangle.left, rectangle.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+		
+			screenshot.Save("image.png", ImageFormat.Bmp); // DEBUG
+			process[0].Kill();
+
+			Novacode.Image image = document.AddImage(@"image.png");
+			paragraphCodePicture = document.InsertParagraph("", false);
+			Picture picture = image.CreatePicture();
+			paragraphCodePicture.InsertPicture(picture, 0);
+
+			File.Delete("image.png");
+		}
+
 		private void FormatToGost(Paragraph paragraph, Alignment alignment)
 		{
 			paragraph.Alignment = alignment;
 			paragraph.SetLineSpacing(LineSpacingType.After, 0f);
 			paragraph.SetLineSpacing(LineSpacingType.Line, 1.5f);
 		}
+	}
+
+	class User32
+	{
+		[StructLayout(LayoutKind.Sequential)]
+		public struct Rect
+		{
+			public int left;
+			public int top;
+			public int right;
+			public int bottom;
+		}
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr GetWindowRect(IntPtr hWnd, ref Rect rect);
 	}
 }
 
