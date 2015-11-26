@@ -32,10 +32,10 @@ namespace ColDoc
 		private string taskHeader = "Задание №";
 		private string codeHeader = "Текст программы:";
 		private string resultHeader = "Результат:";
-		private int docNumber;
 		private string theme;
-		private int taskNumber = 1;
 		private string[] codeDirFolders;
+		private int docNumber;
+		private int taskNumber = 1;
 		private Collection<string[]> code;
 
 		#endregion
@@ -61,7 +61,7 @@ namespace ColDoc
 			formattingBold = formattingNormal;
 			formattingBold.Bold = true;
 
-			codeDirFolders = GetCodeDirFolders(this.projectsPath);
+			codeDirFolders = Directory.GetDirectories(this.projectsPath);
 
 
 
@@ -180,11 +180,6 @@ namespace ColDoc
 
 				document.InsertParagraph(paragraphEmptyLine);
 			}
-		}
-
-		private string[] GetCodeDirFolders(string path)
-		{
-			return Directory.GetDirectories(path);
 		}
 
 		private Collection<string[]> GetCode(int projectNumber)
