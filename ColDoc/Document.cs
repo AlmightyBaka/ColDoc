@@ -4,6 +4,7 @@ using Novacode;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -36,20 +37,22 @@ namespace ColDoc
 		private string[] codeDirFolders;
 		private int docNumber;
 		private int taskNumber = 1;
+	
 		private Collection<string[]> code;
+		private Bitmap screenshot;
+		private bool makeScreenshot;
 
 		#endregion
 
-		public Document(string projectsPath, string filePath, int docNumber, string theme)
+		public Document(string projectsPath, string filePath, int docNumber, string theme, bool makeScreenshot)
 		{
-			//filePath = @"E:\Code\C#\ColDoc\Docs\test.docx";
-			//document = DocX.Create(filePath);
 			document = DocX.Load(@"E:\Code\C#\ColDoc\Docs\frame.docx");
 
 			this.filePath = filePath;
 			this.docNumber = docNumber;
 			this.theme = theme;
 			this.projectsPath = projectsPath;
+			this.makeScreenshot = makeScreenshot;
 
 			formattingNormal = new Formatting
 			{
@@ -62,53 +65,6 @@ namespace ColDoc
 			formattingBold.Bold = true;
 
 			codeDirFolders = Directory.GetDirectories(this.projectsPath);
-
-
-
-
-			//string headerText = "Rejection Letter";
-			//string letterBodyText = DateTime.Now.ToShortDateString();
-			//string paraTwo = ""
-			//	+ "Dear %APPLICANT%" + Environment.NewLine + Environment.NewLine
-			//	+ "I am writing to thank you for your resume. Unfortunately, your skills and "
-			//	+ "experience do not match our needs at the present time. We will keep your "
-			//	+ "resume in our circular file for future reference. Don't call us, "
-			//	+ "we'll call you. "
-
-			//	+ Environment.NewLine + Environment.NewLine
-			//	+ "Sincerely, "
-			//	+ Environment.NewLine + Environment.NewLine
-			//	+ "Jim Smith, Corporate Hiring Manager";
-
-			//// Title Formatting:
-			//var titleFormat = new Formatting();
-			//titleFormat.FontFamily = new System.Drawing.FontFamily("Arial Black");
-			//titleFormat.Size = 18D;
-			//titleFormat.Position = 12;
-
-			//// Body Formatting
-			//var paraFormat = new Formatting();
-			//paraFormat.FontFamily = new System.Drawing.FontFamily("Calibri");
-			//paraFormat.Size = 10D;
-			//titleFormat.Position = 12;
-
-			//// Create the document in memory:
-			//var doc = DocX.Create(filePath);
-
-			//// Insert each prargraph, with appropriate spacing and alignment:
-			//Paragraph title = doc.InsertParagraph(headerText, false, titleFormat);
-			//title.Alignment = Alignment.center;
-
-			//doc.InsertParagraph(Environment.NewLine);
-			//Paragraph letterBody = doc.InsertParagraph(letterBodyText, false, paraFormat);
-			//letterBody.Alignment = Alignment.both;
-
-			//doc.InsertParagraph(Environment.NewLine);
-			//doc.InsertParagraph(paraTwo, false, paraFormat);
-
-			//doc.Save();
-			//Process.Start("WINWORD.EXE", filePath);
-
 		}
 
 		public void Create()
@@ -124,14 +80,15 @@ namespace ColDoc
 			document.InsertParagraph(paragraphEmptyLine);
 			paragraphCodeHeader = document.InsertParagraph(codeHeader, false, formattingNormal);
 			FormatToGost(paragraphCodeHeader, Alignment.both);
-			WriteCode(0);
+			InsertCode(0);
 			paragraphResultHeader = document.InsertParagraph(resultHeader, false, formattingNormal);
 			FormatToGost(paragraphResultHeader, Alignment.both);
+			
 			document.InsertParagraph(paragraphEmptyLine);
 
 			for (int i = 1; i < codeDirFolders.Length; i++)
 			{
-				WriteTask(i);
+				InsertTask(i);
 			}
 
 			try
@@ -144,7 +101,7 @@ namespace ColDoc
 			}
 		}
 
-		private void WriteTask(int task)
+		private void InsertTask(int task)
 		{
 			taskNumber++;
 			document.InsertParagraph(paragraphEmptyLine);
@@ -155,13 +112,13 @@ namespace ColDoc
 			document.InsertParagraph(paragraphEmptyLine);
 			document.InsertParagraph(paragraphCodeHeader);
 
-			WriteCode(task);
+			InsertCode(task);
 
 			document.InsertParagraph(paragraphResultHeader);
 			document.InsertParagraph(paragraphEmptyLine);
 		}
 
-		private void WriteCode(int task)
+		private void InsertCode(int task)
 		{
 			code = GetCode(task);
 

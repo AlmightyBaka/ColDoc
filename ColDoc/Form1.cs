@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ColDoc
@@ -30,10 +31,9 @@ namespace ColDoc
 
 		private void buttonCreate_Click(object sender, EventArgs e)
 		{
-			// fileDir = @"E:\Code\C#\CollegeDocs\Docs\Test.docx"
 			fileDir = textBoxFilePath.Text;
 
-			Document document = new Document(textBoxProjectsPath.Text, fileDir, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text);
+			Document document = new Document(textBoxProjectsPath.Text, fileDir, (int)numericUpDownDocumentNumber.Value, textBoxTheme.Text, checkBoxMakeScreenshot.Checked);
 			document.Create();
 			if (checkBoxOpenAfterCreate.Checked)
 			{
@@ -65,10 +65,15 @@ namespace ColDoc
 		{
 			UpdateFileDir();
 		}
-
+	
 		private void textBoxName_TextChanged(object sender, EventArgs e)
 		{
 			UpdateFileDir();
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Process.Start(@"E:\Code\C#\ColDoc\ColDoc\bin\Debug\ColDoc.exe");
 		}
 	}
 }

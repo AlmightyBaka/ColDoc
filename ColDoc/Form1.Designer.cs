@@ -45,6 +45,7 @@
 			this.textBoxName = new System.Windows.Forms.TextBox();
 			this.checkBoxMakeScreenshot = new System.Windows.Forms.CheckBox();
 			this.checkBoxOpenAfterCreate = new System.Windows.Forms.CheckBox();
+			this.button1 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownDocumentNumber)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -191,11 +192,22 @@
 			this.checkBoxOpenAfterCreate.Text = "Открыть";
 			this.checkBoxOpenAfterCreate.UseVisualStyleBackColor = true;
 			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(204, 239);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 17;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(459, 373);
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.checkBoxOpenAfterCreate);
 			this.Controls.Add(this.checkBoxMakeScreenshot);
 			this.Controls.Add(this.textBoxName);
@@ -238,6 +250,7 @@
 		private System.Windows.Forms.TextBox textBoxName;
 		private System.Windows.Forms.CheckBox checkBoxMakeScreenshot;
 		private System.Windows.Forms.CheckBox checkBoxOpenAfterCreate;
+		private System.Windows.Forms.Button button1;
 	}
 }
 
