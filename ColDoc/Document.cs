@@ -2,17 +2,14 @@
 
 using Novacode;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Xml.Linq;
+using System.Windows.Forms;
 
 namespace ColDoc
 {
@@ -45,7 +42,7 @@ namespace ColDoc
 		private string[] codeDirFolders;
 		private int docNumber;
 		private int taskNumber = 1;
-	
+
 		private Collection<string[]> code;
 		private Bitmap screenshot;
 		private bool makeScreenshot;
@@ -54,7 +51,7 @@ namespace ColDoc
 
 		public Document(string projectsPath, string filePath, int docNumber, string theme, bool makeScreenshot)
 		{
-			document = DocX.Load(@"E:\Code\C#\ColDoc\Docs\frame.docx");
+			document = DocX.Load(@"frame.docx");
 
 			this.filePath = filePath;
 			this.docNumber = docNumber;
@@ -92,7 +89,7 @@ namespace ColDoc
 			paragraphResultHeader = document.InsertParagraph(resultHeader, false, formattingNormal);
 			InsertScreenshot();
 			FormatToGost(paragraphResultHeader, Alignment.both);
-			
+
 			document.InsertParagraph(paragraphEmptyLine);
 
 			for (int i = 1; i < codeDirFolders.Length; i++)
@@ -106,10 +103,11 @@ namespace ColDoc
 			}
 			catch (Exception)
 			{
-				document.Dispose();
+				MessageBox.Show("Ошибка в сохранении файла")
 			}
+			document.Dispose();
 		}
-	
+
 		private void InsertTask(int task)
 		{
 			taskNumber++;
@@ -143,7 +141,7 @@ namespace ColDoc
 					FormatToGost(paragraphCode, Alignment.both);
 				}
 
-				
+
 
 				document.InsertParagraph(paragraphEmptyLine);
 			}
@@ -161,11 +159,11 @@ namespace ColDoc
 			{
 				if (folder[i].Contains(".sln"))
 				{
-					slnCount = i; // TODO: check condition
+					slnCount = i; // UNSAFE
 					break;
 				}
 			}
-		
+
 			string codeDir = folder[slnCount].Remove(folder[slnCount].Length - 4);
 			string[] projectSplitted = codeDir.Split('\\');
 			codeDir = projectSplitted[projectSplitted.Length - 1];
@@ -189,7 +187,6 @@ namespace ColDoc
 			return code;
 		}
 
-	
 		private void InsertScreenshot()
 		{
 			Process.Start(binaryPath);
@@ -198,23 +195,22 @@ namespace ColDoc
 			Process[] process = Process.GetProcessesByName(binaryPathSplit[binaryPathSplit.Length - 1].Remove(binaryPathSplit[binaryPathSplit.Length - 1].Length - 4));
 			var rectangle = new User32.Rect();
 			User32.GetWindowRect(process[0].MainWindowHandle, ref rectangle);
-		
+
 			int width = rectangle.right - rectangle.left;
 			int height = rectangle.bottom - rectangle.top;
-		
-			screenshot = new Bitmap(width, height, PixelFormat.Format32bppRgb);
+
+			screenshot = new Bitmap(width - 18, height - 9, PixelFormat.Format32bppRgb); // TODO
 			Graphics graphics = Graphics.FromImage(screenshot);
-			graphics.CopyFromScreen(rectangle.left, rectangle.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
-		
-			screenshot.Save("image.png", ImageFormat.Bmp); // DEBUG
+			graphics.CopyFromScreen(rectangle.left + 9, rectangle.top, 0, 0, new Size(width - 9, height - 9), CopyPixelOperation.SourceCopy);
+			screenshot.Save("image.png", ImageFormat.Bmp);
 			process[0].Kill();
 
-			Novacode.Image image = document.AddImage(@"image.png");
+			Novacode.Image image = document.AddImage("image.png");
 			paragraphCodePicture = document.InsertParagraph("", false);
 			Picture picture = image.CreatePicture();
-			paragraphCodePicture.InsertPicture(picture, 0);
+			paragraphCodePicture.InsertPicture(picture);
 
-			File.Delete("image.png");
+			//File.Delete("image.png"); // DEBUG
 		}
 
 		private void FormatToGost(Paragraph paragraph, Alignment alignment)
